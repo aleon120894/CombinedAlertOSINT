@@ -1,0 +1,29 @@
+# Build files
+/build/
+/CMakeFiles/
+/CMakeCache.txt
+/*.cmake
+/*.o
+/*.a
+/*.so
+/*.exe
+/*.out
+
+# Generated files
+*.dSYM/
+*.dll
+*.exe
+*.log
+*.obj
+*.pch
+*.pdb
+*.pyc
+*.pyo
+*.sln
+*.swp
+*.vcxproj
+*.vs/
+*.xcodeproj
+
+# OS generated files
+.DS_Store
