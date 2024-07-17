@@ -4,11 +4,8 @@
 #include <sqlite3.h>
 #include <json/json.h>
 #include "osint_system.h"
+#include "utils.h"  // Додайте цей рядок
 
-size_t WriteCallback(void* contents, size_t size, size_t nmemb, void* userp) {
-    ((std::string*)userp)->append((char*)contents, size * nmemb);
-    return size * nmemb;
-}
 
 void fetchOSINTData(const std::string& url, std::string& readBuffer) {
     CURL* curl;
