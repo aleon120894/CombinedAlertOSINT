@@ -4,6 +4,7 @@ project(OSINTSystem)
 set(CMAKE_CXX_STANDARD 11)
 
 find_package(CURL REQUIRED)
+
 if(CURL_FOUND)
     include_directories(${CURL_INCLUDE_DIRS})
     message(STATUS "Found CURL: ${CURL_LIBRARIES}")

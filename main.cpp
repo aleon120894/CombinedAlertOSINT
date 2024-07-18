@@ -3,7 +3,9 @@
 #include "alert_system.h"
 #include "osint_system.h"
 
+
 int main() {
+
     std::string alertData;
     fetchAlertData("https://example.com/alerts", alertData);
     parseAlertJSON(alertData);

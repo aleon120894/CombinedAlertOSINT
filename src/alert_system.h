@@ -5,6 +5,7 @@
 
 // Клас AlertSystem
 class AlertSystem {
+    
 public:
     AlertSystem();
     void sendAlert(const std::string &message);
