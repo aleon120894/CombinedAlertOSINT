@@ -5,6 +5,7 @@
 #include <vector>
 
 class OSINTSystem {
+    
 public:
     OSINTSystem();
     void gatherData(const std::string &source);

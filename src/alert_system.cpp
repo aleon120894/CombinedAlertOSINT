@@ -6,6 +6,33 @@
 #include "alert_system.h"
 #include "utils.h"  // Додайте цей рядок
 
+// Видаліть визначення WriteCallback з цього файлу
+
+void createTables(sqlite3* db) {
+    char* zErrMsg = 0;
+    int rc;
+    const char* createAlertsTableSQL = 
+        "CREATE TABLE IF NOT EXISTS Alerts ("
+        "ID INTEGER PRIMARY KEY AUTOINCREMENT,"
+        "Data TEXT NOT NULL);";
+
+    const char* createOSINTTableSQL = 
+        "CREATE TABLE IF NOT EXISTS OSINT ("
+        "ID INTEGER PRIMARY KEY AUTOINCREMENT,"
+        "Data TEXT NOT NULL);";
+
+    rc = sqlite3_exec(db, createAlertsTableSQL, 0, 0, &zErrMsg);
+    if (rc != SQLITE_OK) {
+        std::cerr << "SQL error: " << zErrMsg << std::endl;
+        sqlite3_free(zErrMsg);
+    }
+
+    rc = sqlite3_exec(db, createOSINTTableSQL, 0, 0, &zErrMsg);
+    if (rc != SQLITE_OK) {
+        std::cerr << "SQL error: " << zErrMsg << std::endl;
+        sqlite3_free(zErrMsg);
+    }
+}
 
 void fetchAlertData(const std::string& url, std::string& readBuffer) {
     CURL* curl;
