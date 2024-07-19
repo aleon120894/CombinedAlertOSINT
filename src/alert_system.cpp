@@ -4,9 +4,7 @@
 #include <sqlite3.h>
 #include <json/json.h>
 #include "alert_system.h"
-#include "utils.h"  // Додайте цей рядок
-
-// Видаліть визначення WriteCallback з цього файлу
+#include "utils.h"
 
 void createTables(sqlite3* db) {
     char* zErrMsg = 0;
@@ -23,14 +21,18 @@ void createTables(sqlite3* db) {
 
     rc = sqlite3_exec(db, createAlertsTableSQL, 0, 0, &zErrMsg);
     if (rc != SQLITE_OK) {
-        std::cerr << "SQL error: " << zErrMsg << std::endl;
+        std::cerr << "SQL error when creating Alerts table: " << zErrMsg << std::endl;
         sqlite3_free(zErrMsg);
+    } else {
+        std::cout << "Alerts table created successfully or already exists." << std::endl;
     }
 
     rc = sqlite3_exec(db, createOSINTTableSQL, 0, 0, &zErrMsg);
     if (rc != SQLITE_OK) {
-        std::cerr << "SQL error: " << zErrMsg << std::endl;
+        std::cerr << "SQL error when creating OSINT table: " << zErrMsg << std::endl;
         sqlite3_free(zErrMsg);
+    } else {
+        std::cout << "OSINT table created successfully or already exists." << std::endl;
     }
 }
 
@@ -84,7 +86,37 @@ void saveAlertToDatabase(const std::string& data) {
         std::cout << "Opened database successfully" << std::endl;
     }
 
+    createTables(db); // Створення таблиць
+
     std::string sql = "INSERT INTO Alerts (Data) VALUES ('" + data + "');";
+
+    rc = sqlite3_exec(db, sql.c_str(), 0, 0, &zErrMsg);
+    if (rc != SQLITE_OK) {
+        std::cerr << "SQL error: " << zErrMsg << std::endl;
+        sqlite3_free(zErrMsg);
+    } else {
+        std::cout << "Data inserted successfully" << std::endl;
+    }
+
+    sqlite3_close(db);
+}
+
+void saveOSINTToDatabase(const std::string& data) {
+    sqlite3* db;
+    char* zErrMsg = 0;
+    int rc;
+
+    rc = sqlite3_open("osint.db", &db);
+    if (rc) {
+        std::cerr << "Can't open database: " << sqlite3_errmsg(db) << std::endl;
+        return;
+    } else {
+        std::cout << "Opened database successfully" << std::endl;
+    }
+
+    createTables(db); // Створення таблиць
+
+    std::string sql = "INSERT INTO OSINT (Data) VALUES ('" + data + "');";
 
     rc = sqlite3_exec(db, sql.c_str(), 0, 0, &zErrMsg);
     if (rc != SQLITE_OK) {
