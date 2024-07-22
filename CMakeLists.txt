@@ -25,6 +25,6 @@ include_directories(/usr/include/jsoncpp)
 include_directories(${CMAKE_SOURCE_DIR}/src)
 
 # Створення єдиної цілі
-add_executable(OSINTSystem main.cpp src/alert_system.cpp src/osint_system.cpp src/utils.cpp)  # Додайте src/utils.cpp
+add_executable(OSINTAlertSystem main.cpp src/alert_system.cpp src/osint_system.cpp src/utils.cpp)  # Додайте src/utils.cpp
 
-target_link_libraries(OSINTSystem ${CURL_LIBRARIES} ${SQLite3_LIBRARIES} jsoncpp)
+target_link_libraries(OSINTAlertSystem ${CURL_LIBRARIES} ${SQLite3_LIBRARIES} jsoncpp)
