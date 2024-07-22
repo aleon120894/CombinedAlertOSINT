@@ -1,9 +1,12 @@
 #include <iostream>
 #include <string>
+#include <cstdlib> // Для getenv
 #include <sqlite3.h>
 #include "alert_system.h"
 #include "osint_system.h"
 
+// Декларація функції createTables
+void createTables(sqlite3* db);
 
 void testDatabase() {
     sqlite3* db;
@@ -61,17 +64,44 @@ void printDatabaseContents(const std::string& dbName, const std::string& tableNa
 }
 
 int main() {
+    // Отримайте URL-адреси з змінних середовища
+    const char* alertURL = getenv("ALERT_URL");
+    const char* osintURL = getenv("OSINT_URL");
+
+    if (!alertURL || !osintURL) {
+        std::cerr << "Environment variables ALERT_URL or OSINT_URL are not set." << std::endl;
+        return 1;
+    }
+
+    sqlite3* db;
+    int rc = sqlite3_open("alerts.db", &db);
+    if (rc) {
+        std::cerr << "Can't open database: " << sqlite3_errmsg(db) << std::endl;
+        return 1;
+    }
+
+    // Create tables
+    createTables(db);
+    sqlite3_close(db);
+
+    // Test if the database is set up correctly
     testDatabase();
 
+    // Fetch and save alert data
     std::string alertData;
-    fetchAlertData("https://jsonplaceholder.typicode.com/todos/1", alertData);
+    fetchAlertData(alertURL, alertData);
     parseAlertJSON(alertData);
     saveAlertToDatabase(alertData);
 
+    // Fetch and save OSINT data
     std::string osintData;
-    fetchOSINTData("https://jsonplaceholder.typicode.com/todos/1", osintData);
+    fetchOSINTData(osintURL, osintData);
     parseOSINTJSON(osintData);
     saveOSINTToDatabase(osintData);
+
+    // Print contents of the database tables
+    printDatabaseContents("alerts.db", "Alerts");
+    printDatabaseContents("alerts.db", "OSINT");
 
     return 0;
 }

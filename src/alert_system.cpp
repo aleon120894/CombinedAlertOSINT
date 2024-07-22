@@ -6,6 +6,7 @@
 #include "alert_system.h"
 #include "utils.h"
 
+
 void createTables(sqlite3* db) {
     char* zErrMsg = 0;
     int rc;
@@ -41,6 +42,7 @@ void fetchAlertData(const std::string& url, std::string& readBuffer) {
     CURLcode res;
 
     curl = curl_easy_init();
+    
     if (curl) {
         curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
