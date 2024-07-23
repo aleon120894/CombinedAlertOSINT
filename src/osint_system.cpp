@@ -10,6 +10,7 @@
 void saveOSINTToDatabase(const std::string& data);
 
 void fetchOSINTData(const std::string& url, std::string& readBuffer) {
+    
     CURL* curl;
     CURLcode res;
 

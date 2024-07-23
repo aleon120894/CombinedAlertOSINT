@@ -5,10 +5,12 @@
 #include "alert_system.h"
 #include "osint_system.h"
 
+
 // Декларація функції createTables
 void createTables(sqlite3* db);
 
 void testDatabase() {
+
     sqlite3* db;
     int rc = sqlite3_open("alerts.db", &db);
     if (rc) {
@@ -20,6 +22,7 @@ void testDatabase() {
     const char* sql = "SELECT name FROM sqlite_master WHERE type='table' AND name='Alerts';";
 
     rc = sqlite3_exec(db, sql, 0, 0, &zErrMsg);
+
     if (rc != SQLITE_OK) {
         std::cerr << "SQL error: " << zErrMsg << std::endl;
         sqlite3_free(zErrMsg);
@@ -31,13 +34,15 @@ void testDatabase() {
 }
 
 void printDatabaseContents(const std::string& dbName, const std::string& tableName) {
+
     sqlite3* db;
     char* zErrMsg = 0;
     int rc;
+
     sqlite3_stmt* stmt;
     std::string sql = "SELECT * FROM " + tableName;
-
     rc = sqlite3_open(dbName.c_str(), &db);
+
     if (rc) {
         std::cerr << "Can't open database: " << sqlite3_errmsg(db) << std::endl;
         return;
@@ -64,6 +69,7 @@ void printDatabaseContents(const std::string& dbName, const std::string& tableNa
 }
 
 int main() {
+
     // Отримайте URL-адреси з змінних середовища
     const char* alertURL = getenv("ALERT_URL");
     const char* osintURL = getenv("OSINT_URL");
@@ -75,6 +81,7 @@ int main() {
 
     sqlite3* db;
     int rc = sqlite3_open("alerts.db", &db);
+
     if (rc) {
         std::cerr << "Can't open database: " << sqlite3_errmsg(db) << std::endl;
         return 1;
