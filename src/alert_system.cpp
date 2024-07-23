@@ -8,6 +8,7 @@
 
 
 void createTables(sqlite3* db) {
+
     char* zErrMsg = 0;
     int rc;
     const char* createAlertsTableSQL = 
@@ -38,15 +39,18 @@ void createTables(sqlite3* db) {
 }
 
 void fetchAlertData(const std::string& url, std::string& readBuffer) {
+
     CURL* curl;
     CURLcode res;
 
     curl = curl_easy_init();
     
     if (curl) {
+
         curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
+        
         res = curl_easy_perform(curl);
         curl_easy_cleanup(curl);
 
@@ -57,6 +61,7 @@ void fetchAlertData(const std::string& url, std::string& readBuffer) {
 }
 
 void parseAlertJSON(const std::string& rawData) {
+
     Json::CharReaderBuilder reader;
     Json::Value jsonData;
     std::string errs;
@@ -76,6 +81,7 @@ void parseAlertJSON(const std::string& rawData) {
 }
 
 void saveAlertToDatabase(const std::string& data) {
+
     sqlite3* db;
     char* zErrMsg = 0;
     int rc;
@@ -104,6 +110,7 @@ void saveAlertToDatabase(const std::string& data) {
 }
 
 void saveOSINTToDatabase(const std::string& data) {
+
     sqlite3* db;
     char* zErrMsg = 0;
     int rc;
