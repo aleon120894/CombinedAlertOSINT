@@ -71,8 +71,11 @@ void printDatabaseContents(const std::string& dbName, const std::string& tableNa
 int main() {
 
     // Отримайте URL-адреси з змінних середовища
-    const char* alertURL = getenv("ALERT_URL");
-    const char* osintURL = getenv("OSINT_URL");
+    // const char* alertURL = getenv("ALERT_URL");
+    // const char* osintURL = getenv("OSINT_URL");
+    
+    const char* alertURL = "https://jsonplaceholder.typicode.com/todos/1";
+    const char* osintURL = "https://jsonplaceholder.typicode.com/todos/1";
 
     if (!alertURL || !osintURL) {
         std::cerr << "Environment variables ALERT_URL or OSINT_URL are not set." << std::endl;

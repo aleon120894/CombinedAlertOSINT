@@ -3,8 +3,8 @@ project(OSINTSystem)
 
 set(CMAKE_CXX_STANDARD 11)
 
+# Find CURL
 find_package(CURL REQUIRED)
-
 if(CURL_FOUND)
     include_directories(${CURL_INCLUDE_DIRS})
     message(STATUS "Found CURL: ${CURL_LIBRARIES}")
@@ -12,19 +12,32 @@ else()
     message(FATAL_ERROR "Could NOT find CURL")
 endif()
 
+# Find SQLite3
 find_package(SQLite3 REQUIRED)
 include_directories(${SQLite3_INCLUDE_DIRS})
 
+# Find jsoncpp
 find_package(jsoncpp REQUIRED)
 include_directories(${jsoncpp_INCLUDE_DIRS})
 
-# Додайте шлях до заголовків jsoncpp
+# Add path to jsoncpp headers (if not already covered by find_package)
 include_directories(/usr/include/jsoncpp)
 
-# Додайте цю лінію, щоб включити директорію src
-include_directories(${CMAKE_SOURCE_DIR}/src)
+# Add path to inih headers (ensure this path is correct)
+include_directories(${CMAKE_SOURCE_DIR}/external/inih/)
+include_directories(${CMAKE_SOURCE_DIR}/external/inih/cpp)
 
-# Створення єдиної цілі
-add_executable(OSINTAlertSystem main.cpp src/alert_system.cpp src/osint_system.cpp src/utils.cpp)  # Додайте src/utils.cpp
+# Include path for your header files
+include_directories(${CMAKE_SOURCE_DIR}/include)
 
+# Create a single target
+add_executable(OSINTAlertSystem 
+    main.cpp 
+    src/alert_system.cpp 
+    src/osint_system.cpp 
+    src/utils.cpp 
+    ## src/config.cpp
+)
+
+# Link libraries
 target_link_libraries(OSINTAlertSystem ${CURL_LIBRARIES} ${SQLite3_LIBRARIES} jsoncpp)
