@@ -1,9 +1,18 @@
 #include "config.h"
 #include "ini.h"
+#include <iostream>
 
 Config::Config(const std::string& filename) {
-    // Use the static function to parse the INI file
-    ini_parse(filename.c_str(), handle_ini, this);
+    int result = ini_parse(filename.c_str(), [](void* user, const char* section, const char* name, const char* value) -> int {
+        auto* config = static_cast<Config*>(user);
+        std::cout << "Parsing - Section: " << section << ", Name: " << name << ", Value: " << value << std::endl;
+        config->data[section][name] = value;
+        return 1;
+    }, this);
+
+    if (result != 0) {
+        std::cerr << "Error parsing INI file, error code: " << result << std::endl;
+    }
 }
 
 std::string Config::get(const std::string& section, const std::string& name) const {
@@ -15,11 +24,4 @@ std::string Config::get(const std::string& section, const std::string& name) con
         }
     }
     return {};
-}
-
-// Static function definition
-int Config::handle_ini(void* user, const char* section, const char* name, const char* value) {
-    Config* config = static_cast<Config*>(user);
-    config->data[section][name] = value;
-    return 1; // Continue parsing
 }

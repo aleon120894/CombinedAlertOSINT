@@ -20,24 +20,20 @@ include_directories(${SQLite3_INCLUDE_DIRS})
 find_package(jsoncpp REQUIRED)
 include_directories(${jsoncpp_INCLUDE_DIRS})
 
-# Add path to jsoncpp headers (if not already covered by find_package)
+# Add path to jsoncpp headers
 include_directories(/usr/include/jsoncpp)
 
-# Add path to inih headers (ensure this path is correct)
-include_directories(${CMAKE_SOURCE_DIR}/external/inih/)
+# Add path to inih headers
 include_directories(${CMAKE_SOURCE_DIR}/external/inih/cpp)
 
-# Include path for your header files
+# Add path to your project's include directory
 include_directories(${CMAKE_SOURCE_DIR}/include)
 
+# Add the inih directory as a subdirectory
+add_subdirectory(external/inih)
+
 # Create a single target
-add_executable(OSINTAlertSystem 
-    main.cpp 
-    src/alert_system.cpp 
-    src/osint_system.cpp 
-    src/utils.cpp 
-    ## src/config.cpp
-)
+add_executable(OSINTAlertSystem main.cpp src/alert_system.cpp src/osint_system.cpp src/utils.cpp src/config.cpp)
 
 # Link libraries
-target_link_libraries(OSINTAlertSystem ${CURL_LIBRARIES} ${SQLite3_LIBRARIES} jsoncpp)
+target_link_libraries(OSINTAlertSystem ${CURL_LIBRARIES} ${SQLite3_LIBRARIES} jsoncpp inih)

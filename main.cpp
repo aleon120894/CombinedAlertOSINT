@@ -1,16 +1,15 @@
 #include <iostream>
 #include <string>
-#include <cstdlib> // Для getenv
+#include <cstdlib> // For std::getenv
 #include <sqlite3.h>
 #include "alert_system.h"
 #include "osint_system.h"
+#include "config.h"
 
-
-// Декларація функції createTables
+// Declaration of function createTables
 void createTables(sqlite3* db);
 
 void testDatabase() {
-
     sqlite3* db;
     int rc = sqlite3_open("alerts.db", &db);
     if (rc) {
@@ -34,7 +33,6 @@ void testDatabase() {
 }
 
 void printDatabaseContents(const std::string& dbName, const std::string& tableName) {
-
     sqlite3* db;
     char* zErrMsg = 0;
     int rc;
@@ -70,15 +68,17 @@ void printDatabaseContents(const std::string& dbName, const std::string& tableNa
 
 int main() {
 
-    // Отримайте URL-адреси з змінних середовища
-    // const char* alertURL = getenv("ALERT_URL");
-    // const char* osintURL = getenv("OSINT_URL");
-    
-    const char* alertURL = "https://jsonplaceholder.typicode.com/todos/1";
-    const char* osintURL = "https://jsonplaceholder.typicode.com/todos/1";
+    // Load configuration from config.ini
+    Config config("./config.ini");
 
-    if (!alertURL || !osintURL) {
-        std::cerr << "Environment variables ALERT_URL or OSINT_URL are not set." << std::endl;
+    // std::string alertURL = config.get("Settings", "alert_url");
+    // std::string osintURL = config.get("Settings", "osint_url");
+
+    std::string alertURL = "https://jsonplaceholder.typicode.com/todos/1";
+    std::string osintURL = "https://jsonplaceholder.typicode.com/todos/1";
+
+    if (alertURL.empty() || osintURL.empty()) {
+        std::cerr << "Configuration values for alert_url or osint_url are not set." << std::endl;
         return 1;
     }
 
@@ -115,3 +115,4 @@ int main() {
 
     return 0;
 }
+
