@@ -11,7 +11,6 @@ public:
 
 private:
     std::map<std::string, std::map<std::string, std::string>> data;
-    static int handle_ini(void* user, const char* section, const char* name, const char* value);
 };
 
 #endif // CONFIG_H
