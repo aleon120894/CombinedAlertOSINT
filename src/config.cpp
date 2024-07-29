@@ -2,16 +2,19 @@
 #include "ini.h"
 #include <iostream>
 
+
 Config::Config(const std::string& filename) {
-    int result = ini_parse(filename.c_str(), [](void* user, const char* section, const char* name, const char* value) -> int {
+    std::cout << "Attempting to parse INI file: " << filename << std::endl;
+    int error = ini_parse(filename.c_str(), [](void* user, const char* section, const char* name, const char* value) -> int {
+        std::cout << "Parsing section: " << section << ", name: " << name << ", value: " << value << std::endl;
         auto* config = static_cast<Config*>(user);
-        std::cout << "Parsing - Section: " << section << ", Name: " << name << ", Value: " << value << std::endl;
         config->data[section][name] = value;
         return 1;
     }, this);
 
-    if (result != 0) {
-        std::cerr << "Error parsing INI file, error code: " << result << std::endl;
+    if (error != 0) {
+        std::cerr << "Error parsing INI file, error code: " << error << std::endl;
+        exit(EXIT_FAILURE);
     }
 }
 
