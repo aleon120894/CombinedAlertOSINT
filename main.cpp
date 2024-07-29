@@ -1,10 +1,14 @@
 #include <iostream>
 #include <string>
 #include <cstdlib> // For std::getenv
+#include <fstream> // For file reading
+#include <unistd.h> // For getcwd
+#include <sys/stat.h> // For struct stat and stat()
 #include <sqlite3.h>
 #include "alert_system.h"
 #include "osint_system.h"
 #include "config.h"
+
 
 // Declaration of function createTables
 void createTables(sqlite3* db);
@@ -68,14 +72,48 @@ void printDatabaseContents(const std::string& dbName, const std::string& tableNa
 
 int main() {
 
+    char cwd[1024];
+    if (getcwd(cwd, sizeof(cwd)) != nullptr) {
+        std::cout << "Current working directory: " << cwd << std::endl;
+    } else {
+        std::cerr << "Error getting current working directory." << std::endl;
+        return 1;
+    }
+
+    // Explicitly set the config file path to the project root directory
+    std::string configFilePath = std::string(cwd) + "/../config.ini";
+
+    // Debug: Print the path to the config file
+    std::cout << "Config file path: " << configFilePath << std::endl;
+
+    // Check if config.ini exists and is readable
+    struct stat buffer;
+    if (stat(configFilePath.c_str(), &buffer) != 0) {
+        std::cerr << "Config file 'config.ini' does not exist or is not readable." << std::endl;
+        return 1;
+    } else {
+        std::cout << "Config file 'config.ini' exists and is readable." << std::endl;
+
+        // Print file contents for debugging
+        std::ifstream configFile(configFilePath);
+        if (configFile.is_open()) {
+            std::string line;
+            std::cout << "Contents of 'config.ini':" << std::endl;
+            while (getline(configFile, line)) {
+                std::cout << line << std::endl;
+            }
+            configFile.close();
+        } else {
+            std::cerr << "Error opening 'config.ini' for reading." << std::endl;
+            return 1;
+        }
+    }
+
     // Load configuration from config.ini
-    Config config("./config.ini");
+    Config config(configFilePath);
 
-    // std::string alertURL = config.get("Settings", "alert_url");
-    // std::string osintURL = config.get("Settings", "osint_url");
-
-    std::string alertURL = "https://jsonplaceholder.typicode.com/todos/1";
-    std::string osintURL = "https://jsonplaceholder.typicode.com/todos/1";
+    std::string alertURL = config.get("Settings", "alert_url");
+    std::string osintURL = config.get("Settings", "osint_url");
 
     if (alertURL.empty() || osintURL.empty()) {
         std::cerr << "Configuration values for alert_url or osint_url are not set." << std::endl;
@@ -115,4 +153,3 @@ int main() {
 
     return 0;
 }
-
