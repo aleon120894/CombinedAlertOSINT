@@ -4,10 +4,13 @@
 #include <fstream> // For file reading
 #include <unistd.h> // For getcwd
 #include <sys/stat.h> // For struct stat and stat()
+
 #include <sqlite3.h>
 #include "alert_system.h"
 #include "osint_system.h"
 #include "config.h"
+#include "alert_api.h"
+#include "notification.h"
 
 
 // Declaration of function createTables

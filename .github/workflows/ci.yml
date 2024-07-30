@@ -10,7 +10,6 @@ on:
 
 jobs:
   build:
-    
     runs-on: ubuntu-latest
 
     steps:
@@ -26,10 +25,11 @@ jobs:
           cmake-version: '3.18.2'
       
       - name: Add Externals
-        run: mkdir external
-        run: cd external
-        run: git clone https://github.com/benhoyt/inih.git 
-        run: cd ../../
+        run: |
+          mkdir external
+          cd external
+          git clone https://github.com/benhoyt/inih.git 
+          cd ../../
 
       - name: Configure CMake
         run: cmake -B build -S .
