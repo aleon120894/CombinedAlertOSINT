@@ -12,7 +12,6 @@ public:
     std::vector<std::string> analyzeData();
 };
 
-// Декларація функцій
 void fetchOSINTData(const std::string &url, std::string &osintData);
 void parseOSINTJSON(const std::string &osintData);
 void saveOSINTToDatabase(const std::string &osintData);
