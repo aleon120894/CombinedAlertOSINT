@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <json/json.h>
 
 struct Alert {
     std::string id;
@@ -12,11 +13,24 @@ struct Alert {
 };
 
 class AlertAPI {
+
 public:
     AlertAPI(const std::string& url);
     std::vector<Alert> fetchAlerts();
+
+    void processAirAlerts(const std::string& url);
+    void processNewsAggregator(const std::string& url);
+
 private:
     std::string apiUrl;
+
 };
+
+struct MemoryStruct {
+    char* memory;
+    size_t size;
+};
+
+Json::Value fetchData(const std::string& url);
 
 #endif // ALERT_API_H

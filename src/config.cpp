@@ -4,6 +4,7 @@
 
 
 Config::Config(const std::string& filename) {
+
     std::cout << "Attempting to parse INI file: " << filename << std::endl;
     int error = ini_parse(filename.c_str(), [](void* user, const char* section, const char* name, const char* value) -> int {
         std::cout << "Parsing section: " << section << ", name: " << name << ", value: " << value << std::endl;
@@ -19,6 +20,7 @@ Config::Config(const std::string& filename) {
 }
 
 std::string Config::get(const std::string& section, const std::string& name) const {
+    
     auto it = data.find(section);
     if (it != data.end()) {
         auto jt = it->second.find(name);

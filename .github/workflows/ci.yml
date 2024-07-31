@@ -25,7 +25,7 @@ jobs:
           cmake-version: '3.18.2'
       
       - name: Add Externals
-        run: |
+        run: 
           mkdir external
           cd external
           git clone https://github.com/benhoyt/inih.git 

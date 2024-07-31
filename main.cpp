@@ -9,8 +9,8 @@
 #include "alert_system.h"
 #include "osint_system.h"
 #include "config.h"
-#include "alert_api.h"
 #include "notification.h"
+#include "alert_api.h"
 
 
 // Declaration of function createTables
@@ -76,6 +76,7 @@ void printDatabaseContents(const std::string& dbName, const std::string& tableNa
 int main() {
 
     char cwd[1024];
+
     if (getcwd(cwd, sizeof(cwd)) != nullptr) {
         std::cout << "Current working directory: " << cwd << std::endl;
     } else {
@@ -118,8 +119,11 @@ int main() {
     std::string alertURL = config.get("Settings", "alert_url");
     std::string osintURL = config.get("Settings", "osint_url");
 
-    if (alertURL.empty() || osintURL.empty()) {
-        std::cerr << "Configuration values for alert_url or osint_url are not set." << std::endl;
+    std::string air_alert_url = config.get("Settings", "air_alert_url");
+    std::string news_aggregator_url = config.get("Settings", "news_aggregator_url");
+
+    if (alertURL.empty() || osintURL.empty() || air_alert_url.empty() || news_aggregator_url.empty()) {
+        std::cerr << "Configuration values for alert_url or osint_url, air_alert_url, or news_aggregator_url are not set." << std::endl;
         return 1;
     }
 
@@ -149,6 +153,12 @@ int main() {
     fetchOSINTData(osintURL, osintData);
     parseOSINTJSON(osintData);
     saveOSINTToDatabase(osintData);
+
+    // Process alert api data
+    // AlertAPI api(air_alert_url);
+
+    // api.processAirAlerts(air_alert_url);
+    // api.processNewsAggregator(news_aggregator_url);
 
     // Print contents of the database tables
     printDatabaseContents("alerts.db", "Alerts");

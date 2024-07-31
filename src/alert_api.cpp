@@ -4,50 +4,63 @@
 #include <curl/curl.h>
 #include <json/json.h>
 
+
 AlertAPI::AlertAPI(const std::string& url) : apiUrl(url) {}
 
-std::vector<Alert> AlertAPI::fetchAlerts() {
-
+Json::Value fetchData(const std::string& url) {
     CURL* curl;
     CURLcode res;
-    std::string readBuffer;
+    MemoryStruct chunk;
 
+    chunk.memory = (char*)malloc(1);
+    chunk.size = 0;
+
+    curl_global_init(CURL_GLOBAL_ALL);
     curl = curl_easy_init();
 
     if(curl) {
-
-        curl_easy_setopt(curl, CURLOPT_URL, apiUrl.c_str());
+        curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
-        curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
-
+        curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void*)&chunk);
         res = curl_easy_perform(curl);
-        curl_easy_cleanup(curl);
 
         if(res != CURLE_OK) {
-            std::cerr << "curl_easy_perform() failed: " << curl_easy_strerror(res) << std::endl;
-            return {};
+            fprintf(stderr, "curl_easy_perform() failed: %s\n", curl_easy_strerror(res));
+        } else {
+            // Parse JSON data
+            Json::CharReaderBuilder builder;
+            Json::CharReader* reader = builder.newCharReader();
+            Json::Value jsonData;
+            std::string errors;
+
+            bool parsingSuccessful = reader->parse(chunk.memory, chunk.memory + chunk.size, &jsonData, &errors);
+            delete reader;
+
+            if(!parsingSuccessful) {
+                std::cerr << "Failed to parse the JSON data: " << errors << std::endl;
+            }
+
+            free(chunk.memory);
+            curl_easy_cleanup(curl);
+            curl_global_cleanup();
+            return jsonData;
         }
+        curl_easy_cleanup(curl);
     }
+    curl_global_cleanup();
+    return Json::Value();
+}
 
-    std::vector<Alert> alerts;
-    Json::Value jsonData;
-    Json::Reader jsonReader;
+void processAirAlerts(std::string& url) {
 
-    if (jsonReader.parse(readBuffer, jsonData)) {
+    Json::Value data = fetchData(url);
+    // Обробка даних з air_alerts
+    std::cout << "Air Alerts Data: " << data.toStyledString() << std::endl;
+}
 
-        for (const auto& item : jsonData["alerts"]) {
-
-            Alert alert;
-            alert.id = item["id"].asString();
-            alert.message = item["message"].asString();
-            alert.region = item["region"].asString();
-
-            alert.time = item["time"].asString();
-            alerts.push_back(alert);
-        }
-    } else {
-        std::cerr << "Failed to parse JSON data" << std::endl;
-    }
-
-    return alerts;
+void processNewsAggregator(std::string& url) {
+    
+    Json::Value data = fetchData(url);
+    // Обробка даних з air_alerts
+    std::cout << "Air Alerts Data: " << data.toStyledString() << std::endl;
 }
