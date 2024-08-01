@@ -11,7 +11,6 @@ public:
     void sendAlert(const std::string &message);
 };
 
-// Декларація функцій
 void fetchAlertData(const std::string &url, std::string &alertData);
 void parseAlertJSON(const std::string &alertData);
 void saveAlertToDatabase(const std::string &alertData);

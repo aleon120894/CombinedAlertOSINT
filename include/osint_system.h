@@ -7,6 +7,7 @@
 class OSINTSystem {
     
 public:
+
     OSINTSystem();
     void gatherData(const std::string &source);
     std::vector<std::string> analyzeData();

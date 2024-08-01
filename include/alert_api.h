@@ -13,7 +13,6 @@ struct Alert {
 };
 
 class AlertAPI {
-
 public:
     AlertAPI(const std::string& url);
     std::vector<Alert> fetchAlerts();
@@ -24,13 +23,12 @@ public:
 private:
     std::string apiUrl;
 
+    Json::Value fetchData(const std::string& url);
 };
 
 struct MemoryStruct {
     char* memory;
     size_t size;
 };
-
-Json::Value fetchData(const std::string& url);
 
 #endif // ALERT_API_H
