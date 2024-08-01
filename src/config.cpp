@@ -5,9 +5,7 @@
 
 Config::Config(const std::string& filename) {
 
-    std::cout << "Attempting to parse INI file: " << filename << std::endl;
     int error = ini_parse(filename.c_str(), [](void* user, const char* section, const char* name, const char* value) -> int {
-        std::cout << "Parsing section: " << section << ", name: " << name << ", value: " << value << std::endl;
         auto* config = static_cast<Config*>(user);
         config->data[section][name] = value;
         return 1;

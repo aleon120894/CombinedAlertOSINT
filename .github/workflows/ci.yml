@@ -24,12 +24,12 @@ jobs:
         with:
           cmake-version: '3.18.2'
       
-      - name: Add Externals
-        run: 
-          mkdir external
-          cd external
-          git clone https://github.com/benhoyt/inih.git 
-          cd ../../
+      # - name: Add Externals
+      #   run: 
+      #     mkdir external
+      #     cd external
+      #     git clone https://github.com/benhoyt/inih.git 
+      #     cd ../../
 
       - name: Configure CMake
         run: cmake -B build -S .

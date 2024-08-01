@@ -4,10 +4,9 @@
 #include <curl/curl.h>
 #include <json/json.h>
 
-
 AlertAPI::AlertAPI(const std::string& url) : apiUrl(url) {}
 
-Json::Value fetchData(const std::string& url) {
+Json::Value AlertAPI::fetchData(const std::string& url) {
     CURL* curl;
     CURLcode res;
     MemoryStruct chunk;
@@ -51,16 +50,14 @@ Json::Value fetchData(const std::string& url) {
     return Json::Value();
 }
 
-void processAirAlerts(std::string& url) {
-
+void AlertAPI::processAirAlerts(const std::string& url) {
     Json::Value data = fetchData(url);
     // Обробка даних з air_alerts
     std::cout << "Air Alerts Data: " << data.toStyledString() << std::endl;
 }
 
-void processNewsAggregator(std::string& url) {
-    
+void AlertAPI::processNewsAggregator(const std::string& url) {
     Json::Value data = fetchData(url);
-    // Обробка даних з air_alerts
-    std::cout << "Air Alerts Data: " << data.toStyledString() << std::endl;
+    // Обробка даних з news_aggregator
+    std::cout << "News Aggregator Data: " << data.toStyledString() << std::endl;
 }

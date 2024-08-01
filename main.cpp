@@ -66,7 +66,6 @@ void printDatabaseContents(const std::string& dbName, const std::string& tableNa
     while (sqlite3_step(stmt) == SQLITE_ROW) {
         int id = sqlite3_column_int(stmt, 0);
         const unsigned char* data = sqlite3_column_text(stmt, 1);
-        std::cout << "ID: " << id << ", Data: " << data << std::endl;
     }
 
     sqlite3_finalize(stmt);
@@ -155,10 +154,10 @@ int main() {
     saveOSINTToDatabase(osintData);
 
     // Process alert api data
-    // AlertAPI api(air_alert_url);
+    AlertAPI api("");
 
-    // api.processAirAlerts(air_alert_url);
-    // api.processNewsAggregator(news_aggregator_url);
+    api.processAirAlerts(air_alert_url);
+    api.processNewsAggregator(news_aggregator_url);
 
     // Print contents of the database tables
     printDatabaseContents("alerts.db", "Alerts");

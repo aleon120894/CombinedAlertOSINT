@@ -5,6 +5,7 @@
 #include <map>
 
 class Config {
+    
 public:
     Config(const std::string& filename);
     std::string get(const std::string& section, const std::string& name) const;
