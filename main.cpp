@@ -11,6 +11,7 @@
 #include "config.h"
 #include "notification.h"
 #include "alert_api.h"
+#include "server.h"
 
 
 // Declaration of function createTables
@@ -162,6 +163,8 @@ int main() {
     // Print contents of the database tables
     printDatabaseContents("alerts.db", "Alerts");
     printDatabaseContents("alerts.db", "OSINT");
+
+    start_server(air_alert_url, news_aggregator_url);
 
     return 0;
 }

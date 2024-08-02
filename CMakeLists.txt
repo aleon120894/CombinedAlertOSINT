@@ -35,7 +35,7 @@ add_subdirectory(external/inih)
 # Create a single target
 add_executable(OSINTAlertSystem main.cpp src/alert_system.cpp 
 src/osint_system.cpp src/utils.cpp src/config.cpp
-src/alert_api.cpp src/notification.cpp)
+src/alert_api.cpp src/notification.cpp src/server.cpp)
 
 # Link libraries
 target_link_libraries(OSINTAlertSystem ${CURL_LIBRARIES} ${SQLite3_LIBRARIES} jsoncpp inih)
