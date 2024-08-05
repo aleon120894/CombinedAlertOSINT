@@ -10,7 +10,6 @@ struct MemoryStruct {
 };
 
 size_t WriteCallback(void* contents, size_t size, size_t nmemb, void* userp) {
-
     size_t realsize = size * nmemb;
     auto* mem = (MemoryStruct*)userp;
     char* ptr = (char*)realloc(mem->memory, mem->size + realsize + 1);
