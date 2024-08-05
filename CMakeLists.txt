@@ -3,6 +3,9 @@ project(OSINTAlertSystem)
 
 set(CMAKE_CXX_STANDARD 11)
 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address")
+set(CMAKE_LINKER_FLAGS "${CMAKE_LINKER_FLAGS} -fsanitize=address")
+
 # Find CURL
 find_package(CURL REQUIRED)
 if(CURL_FOUND)
@@ -35,7 +38,8 @@ add_subdirectory(external/inih)
 # Create a single target
 add_executable(OSINTAlertSystem main.cpp src/alert_system.cpp 
 src/osint_system.cpp src/utils.cpp src/config.cpp
-src/alert_api.cpp src/notification.cpp src/server.cpp)
+# src/alert_api.cpp 
+src/notification.cpp src/server.cpp)
 
 # Link libraries
 target_link_libraries(OSINTAlertSystem ${CURL_LIBRARIES} ${SQLite3_LIBRARIES} jsoncpp inih)

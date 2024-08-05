@@ -10,7 +10,7 @@
 #include "osint_system.h"
 #include "config.h"
 #include "notification.h"
-#include "alert_api.h"
+// #include "alert_api.h"
 #include "server.h"
 
 
@@ -155,10 +155,10 @@ int main() {
     saveOSINTToDatabase(osintData);
 
     // Process alert api data
-    AlertAPI api("");
+    // AlertAPI api("");
 
-    api.processAirAlerts(air_alert_url);
-    api.processNewsAggregator(news_aggregator_url);
+    // api.processAirAlerts(air_alert_url);
+    // api.processNewsAggregator(news_aggregator_url);
 
     // Print contents of the database tables
     printDatabaseContents("alerts.db", "Alerts");
