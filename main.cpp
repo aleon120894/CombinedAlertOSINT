@@ -18,6 +18,7 @@
 void createTables(sqlite3* db);
 
 void testDatabase() {
+
     sqlite3* db;
     int rc = sqlite3_open("alerts.db", &db);
     if (rc) {
@@ -100,6 +101,7 @@ int main() {
 
         // Print file contents for debugging
         std::ifstream configFile(configFilePath);
+        
         if (configFile.is_open()) {
             std::string line;
             std::cout << "Contents of 'config.ini':" << std::endl;
@@ -136,23 +138,23 @@ int main() {
     }
 
     // Create tables
-    createTables(db);
-    sqlite3_close(db);
+    // createTables(db);
+    // sqlite3_close(db);
 
     // Test if the database is set up correctly
-    testDatabase();
+    // testDatabase();
 
     // Fetch and save alert data
-    std::string alertData;
-    fetchAlertData(alertURL, alertData);
-    parseAlertJSON(alertData);
-    saveAlertToDatabase(alertData);
+    // std::string alertData;
+    // fetchAlertData(alertURL, alertData);
+    // parseAlertJSON(alertData);
+    // saveAlertToDatabase(alertData);
 
     // Fetch and save OSINT data
-    std::string osintData;
-    fetchOSINTData(osintURL, osintData);
-    parseOSINTJSON(osintData);
-    saveOSINTToDatabase(osintData);
+    // std::string osintData;
+    // fetchOSINTData(osintURL, osintData);
+    // parseOSINTJSON(osintData);
+    // saveOSINTToDatabase(osintData);
 
     // Process alert api data
     // AlertAPI api("");

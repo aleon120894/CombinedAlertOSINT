@@ -3,7 +3,7 @@
 
 #include <string>
 
-// Клас AlertSystem
+// AlertSystem Class
 class AlertSystem {
     
 public:
