@@ -8,6 +8,7 @@ set(CMAKE_LINKER_FLAGS "${CMAKE_LINKER_FLAGS} -fsanitize=address")
 
 # Find CURL
 find_package(CURL REQUIRED)
+
 if(CURL_FOUND)
     include_directories(${CURL_INCLUDE_DIRS})
     message(STATUS "Found CURL: ${CURL_LIBRARIES}")
