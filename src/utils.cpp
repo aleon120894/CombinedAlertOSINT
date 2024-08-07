@@ -2,7 +2,7 @@
 #include <cstring>
 #include <cstdlib>
 #include <cstdio>
-
+#include <stdexcept> // For std::runtime_error
 
 struct MemoryStruct {
     char* memory;
@@ -10,23 +10,20 @@ struct MemoryStruct {
 };
 
 size_t WriteCallback(void* contents, size_t size, size_t nmemb, void* userp) {
-
+    
     size_t realsize = size * nmemb;
     MemoryStruct* mem = static_cast<MemoryStruct*>(userp);
 
     // Ensure sufficient memory
     if (mem->memory == nullptr) {
-        
         mem->memory = static_cast<char*>(malloc(realsize + 1));
         if (mem->memory == nullptr) {
-            // Handle allocation failure (e.g., print error)
-            return 0;
+            throw std::runtime_error("Failed to allocate memory in WriteCallback");
         }
     } else {
         char* ptr = static_cast<char*>(realloc(mem->memory, mem->size + realsize + 1));
         if (ptr == nullptr) {
-            // Handle reallocation failure (e.g., print error)
-            return 0;
+            throw std::runtime_error("Failed to reallocate memory in WriteCallback");
         }
         mem->memory = ptr;
     }
