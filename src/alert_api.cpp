@@ -9,6 +9,7 @@
 AlertAPI::AlertAPI(const std::string& url) : apiUrl(url) {}
 
 std::optional<Json::Value> AlertAPI::fetchData(const std::string& url) {
+
     CURL* curl = curl_easy_init();
     if (!curl) {
         std::cerr << "Failed to initialize curl" << std::endl;
@@ -17,11 +18,13 @@ std::optional<Json::Value> AlertAPI::fetchData(const std::string& url) {
 
     MemoryStruct chunk;
     chunk.memory = (char*)malloc(1);
+
     if (!chunk.memory) {
         curl_easy_cleanup(curl);
         std::cerr << "Failed to allocate memory" << std::endl;
         return std::nullopt;
     }
+
     chunk.size = 0;
 
     curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
@@ -45,6 +48,7 @@ std::optional<Json::Value> AlertAPI::fetchData(const std::string& url) {
     delete reader;
 
     if (!parsingSuccessful) {
+        
         std::cerr << "Failed to parse JSON data: " << errors << std::endl;
         free(chunk.memory);
         curl_easy_cleanup(curl);

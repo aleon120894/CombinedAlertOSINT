@@ -70,8 +70,8 @@ void parseAlertJSON(const std::string& rawData) {
     std::string doc;
     doc.assign((std::istreambuf_iterator<char>(s)),
                (std::istreambuf_iterator<char>()));
-
     std::istringstream ss(doc);
+
     if (!Json::parseFromStream(reader, ss, &jsonData, &errs)) {
         std::cerr << "Error parsing JSON data: " << errs << std::endl;
         return;
@@ -94,11 +94,10 @@ void saveAlertToDatabase(const std::string& data) {
         std::cout << "Opened database successfully" << std::endl;
     }
 
-    createTables(db); // Створення таблиць
-
+    createTables(db); 
     std::string sql = "INSERT INTO Alerts (Data) VALUES ('" + data + "');";
-
     rc = sqlite3_exec(db, sql.c_str(), 0, 0, &zErrMsg);
+    
     if (rc != SQLITE_OK) {
         std::cerr << "SQL error: " << zErrMsg << std::endl;
         sqlite3_free(zErrMsg);

@@ -138,8 +138,8 @@ int main() {
     }
 
     // Create tables
-    // createTables(db);
-    // sqlite3_close(db);
+    createTables(db);
+    sqlite3_close(db);
 
     // Test if the database is set up correctly
     // testDatabase();
@@ -163,8 +163,8 @@ int main() {
     // api.processNewsAggregator(news_aggregator_url);
 
     // Print contents of the database tables
-    printDatabaseContents("alerts.db", "Alerts");
-    printDatabaseContents("alerts.db", "OSINT");
+    // printDatabaseContents("alerts.db", "Alerts");
+    // printDatabaseContents("alerts.db", "OSINT");
 
     start_server(air_alert_url, news_aggregator_url);
 

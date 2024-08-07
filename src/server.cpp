@@ -2,7 +2,9 @@
 #include "alert_api.h"
 #include "config.h"
 
+
 void start_server(const std::string& air_alert_url, const std::string& news_aggregator_url) {
+
     httplib::Server svr;
 
     svr.Get("/air_alerts", [&](const httplib::Request&, httplib::Response& res) {   
